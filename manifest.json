@@ -1,0 +1,9 @@
+{
+  "name": "Canvas Utility Belt",
+  "version": "1.0",
+  "description": "Adds some functionality to the Canvas site",
+  "icons": {
+    "64": "icons8-bug-64.png"
+  },
+  "manifest_version": 2
+}
