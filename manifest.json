@@ -5,5 +5,21 @@
   "icons": {
     "64": "icons8-bug-64.png"
   },
+  "permissions": [
+    "https://wustl.instructure.com/",
+    "activeTab",
+    "declarativeContent"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://wustl.instructure.com/courses/*/quizzes/*/moderate"
+      ],
+      "js": [
+        "jquery.js",
+        "moderate_quiz.js"
+      ]
+    }
+  ],
   "manifest_version": 2
 }
