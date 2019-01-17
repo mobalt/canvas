@@ -19,6 +19,15 @@
         "jquery.js",
         "moderate_quiz.js"
       ]
+    },{
+      "matches": [
+        "https://wustl.instructure.com/courses/*/users"
+      ],
+      "js": [
+        "jquery.js",
+        "downloadCSV.js",
+        "exportStudents.js"
+      ]
     }
   ],
   "manifest_version": 2
