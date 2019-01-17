@@ -50,9 +50,21 @@ class Question {
     }
 }
 
+class TextOnly extends Question {
+    constructor (text) {
+        super('text_only_question', text, 'TextOnly', 0)
+    }
+}
+
 class Essay extends Question {
     constructor (text, name, points) {
         super('essay_question', text, name, points)
+    }
+}
+
+class FileUpload extends Question {
+    constructor (text, name, points) {
+        super('file_upload_question', text, name, points)
     }
 }
 
@@ -72,5 +84,51 @@ class FillInBlank extends Question {
     constructor (text, name, points) {
         super('short_answer_question', text, name, points)
     }
+    
+    addAnswer (text = '') {
+        return super.addAnswer(text).correctAnswer()
+    }
+}
+
+class MultipleBlanks extends Question {
+    constructor (text, name, points) {
+        super('fill_in_multiple_blanks_question', text, name, points)
+    }
+    
+    addAnswer (text = '', blank_id) {
+        let answer = super.addAnswer(text)
+        answer.blank_id = blank_id
+        answer.correctAnswer()
+        return answer
+        
+    }
+}
+
+class MultipleDropDowns extends Question {
+    constructor (text, name, points) {
+        super('multiple_dropdowns_question', text, name, points)
+    }
+    
+    addAnswer (text = '', blank_id) {
+        let answer = super.addAnswer(text)
+        answer.blank_id = blank_id
+        return answer
+    }
+}
+
+class TrueFalse extends Question {
+    constructor (text, name, points, isTrue) {
+        super('true_false_question', text, name, points)
+        const t = this.addAnswer('True')
+        const f = this.addAnswer('False')
+        if (isTrue)
+            t.correctAnswer()
+        else
+            f.correctAnswer()
+    }
+}
+
+class Matching extends Question {
+    //todo: implement this
 }
 
