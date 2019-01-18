@@ -28,6 +28,16 @@
         "downloadCSV.js",
         "exportStudents.js"
       ]
+    },{
+      "matches": [
+        "https://wustl.instructure.com/courses/*/quizzes/*/edit"
+      ],
+      "js": [
+        "jquery.js",
+        "js-yaml.js",
+        "quizzes.js",
+        "quizPost.js"
+      ]
     }
   ],
   "manifest_version": 2
