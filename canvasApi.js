@@ -157,7 +157,11 @@ class Category {
     }
 
     createGroup(group_name) {
-        return new Group(0)
+        return postItem(
+            `${api_url}/group_categories/${this.category_id}/groups`,
+            {name: group_name},
+            Group.fromJson
+        )
     }
 
     static fromJson(categoryObj) {
