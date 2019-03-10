@@ -122,7 +122,11 @@ class Course {
     }
 
     createCategory(category_name) {
-        return new Category(0)
+        return postItem(
+            `${api_url}/courses/${this.course_id}/group_categories`,
+            {name: category_name},
+            Category.fromJson
+        )
     }
 
     /**
