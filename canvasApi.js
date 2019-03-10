@@ -115,3 +115,19 @@ class Category {
         return new Group(0)
     }
 }
+
+
+class Group {
+    constructor(group_id) {
+        this.group_id = group_id
+    }
+
+    addMember(user_id) {
+
+    }
+
+    addManyMembers(list_of_user_ids) {
+
+    }
+
+}
