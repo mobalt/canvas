@@ -93,3 +93,14 @@ class Course {
         return new Course(currentCourseId())
     }
 }
+
+
+class Assignment {
+    constructor(assignment_id) {
+        this.assignment_id = assignment_id
+    }
+
+    addExtension(options, students) {
+
+    }
+}
