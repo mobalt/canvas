@@ -99,7 +99,7 @@ class Course {
     getGroups() {
         return jsonList(
             `${api_url}/courses/${this.course_id}/groups`,
-            undefined,
+            {include: ['group_category']},
             Group.fromJson
         )
     }
@@ -150,6 +150,31 @@ class Course {
             `${api_url}/courses/${currentCourseId()}/quizzes/${quiz_id}/extensions`,
             {quiz_extensions: extensionList}
         )
+    }
+
+    importGroups(category_name, groupObj){
+
+        async function importGroupSet(category_name, groups) {
+            const {id: category_id} = await createGroupCategory(category_name)
+
+            for (const group_name in groups) {
+
+                const membersList = groups[group_name],
+                    {id: group_id} = await createGroup(group_name, category_id)
+
+                await Promise.all(
+                    membersList.map(
+                        user_id => addMemberToGroup(group_id, user_id)
+                    )
+                )
+            }
+        }
+
+        importGroupSet('testGroupSet', {
+            alpha: [15656, 18279],
+            beta: [26982],
+            three: [3939, 18752]
+        })
     }
 
     /**
