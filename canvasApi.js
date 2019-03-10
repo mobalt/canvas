@@ -81,7 +81,11 @@ class Course {
     }
 
     getCategories() {
-        return []
+        return jsonList(
+            `${api_url}/courses/${this.course_id}/group_categories`,
+        ).then(     //convert raw categories json data into Category instances
+            categories => categories.map(Category.fromJson)
+        )
     }
 
     getUsers(filters) {
@@ -125,12 +129,17 @@ class Assignment {
 
 
 class Category {
-    constructor(category_id) {
+    constructor(category_id, name = '') {
         this.category_id = category_id
+        this.name = name
     }
 
     createGroup(group_name) {
         return new Group(0)
+    }
+
+    static fromJson(categoryObj) {
+        return new Category(categoryObj.id, categoryObj.name)
     }
 }
 
@@ -157,7 +166,8 @@ class User {
         this.name = name
         this.extra = extra
     }
-    static fromJson(userObj){
+
+    static fromJson(userObj) {
         return new User(userObj.id, userObj.sortable_name, userObj.sis_user_id)
     }
 
