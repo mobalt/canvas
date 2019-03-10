@@ -70,7 +70,7 @@ async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null
 
     // convert to Custom classes if converter is provided
     // otherwise just return raw array
-    if (converterFn){
+    if (converterFn) {
         rows = rows.map(converterFn)
     }
     return rows
@@ -83,7 +83,11 @@ class Course {
     }
 
     getGroups() {
-        return []
+        return jsonList(
+            `${api_url}/courses/${this.course_id}/groups`,
+            undefined,
+            Group.fromJson
+        )
     }
 
     getCategories() {
@@ -150,8 +154,9 @@ class Category {
 
 
 class Group {
-    constructor(group_id) {
+    constructor(group_id, name = '') {
         this.group_id = group_id
+        this.name = name
     }
 
     addMember(user_id) {
@@ -160,6 +165,10 @@ class Group {
 
     addManyMembers(list_of_user_ids) {
 
+    }
+
+    static fromJson(groupObj) {
+        return new Group(groupObj.id, groupObj.name)
     }
 
 }
