@@ -57,7 +57,7 @@ function currentCourseId() {
 }
 
 
-async function jsonList(url, data = {per_page: 100, page: 1}) {
+async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null) {
     if (!data.page) data.page = 1
     if (!data.per_page) data.per_page = 100
 
@@ -66,6 +66,12 @@ async function jsonList(url, data = {per_page: 100, page: 1}) {
     while ((response = await $.getJSON(url, data)) && response.length != 0) {
         rows = rows.concat(response)
         data.page++
+    }
+
+    // convert to Custom classes if converter is provided
+    // otherwise just return raw array
+    if (converterFn){
+        rows = rows.map(converterFn)
     }
     return rows
 }
@@ -83,17 +89,16 @@ class Course {
     getCategories() {
         return jsonList(
             `${api_url}/courses/${this.course_id}/group_categories`,
-        ).then(     //convert raw categories json data into Category instances
-            categories => categories.map(Category.fromJson)
+            undefined,
+            Category.fromJson
         )
     }
 
     getUsers(filters) {
         return jsonList(
             `${api_url}/courses/${this.course_id}/users`,
-            filters
-        ).then(     //convert raw user json data into User instances
-            users => users.map(User.fromJson)
+            filters,
+            User.fromJson
         )
 
     }
