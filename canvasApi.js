@@ -41,3 +41,16 @@ function tokenFromCookie() {
     )
     return decodeURIComponent(token)
 }
+
+
+/**
+ * Get current course id from current URL
+ * @returns {string}
+ */
+function currentCourseId() {
+    return rxSearch(
+        /^\/courses\/(\d+)/i,
+        document.location.pathname,
+        "Couldn't find course id in current path. Are you on a canvas course page?"
+    )
+}
