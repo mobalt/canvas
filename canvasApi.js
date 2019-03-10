@@ -57,6 +57,18 @@ function currentCourseId() {
 }
 
 
+async function jsonList(url, data = {per_page: 100, page: 1}) {
+    if (!data.page) data.page = 1
+    if (!data.per_page) data.per_page = 100
+
+    let rows = []
+    let response
+    while ((response = await $.getJSON(url, data)) && response.length != 0) {
+        rows = rows.concat(response)
+        data.page++
+    }
+    return rows
+}
 
 
 class Course {
@@ -73,11 +85,17 @@ class Course {
     }
 
     getUsers(filters) {
-        return []
+        return jsonList(
+            `${api_url}/courses/${this.course_id}/users`,
+            filters
+        ).then(     //convert raw user json data into User instances
+            users => users.map(User.fromJson)
+        )
+
     }
 
     getStudents() {
-        // enrollment role id 3 = students
+        // limit results to students only
         return this.getUsers({enrollment_role_id: 3})
     }
 
@@ -89,7 +107,7 @@ class Course {
      * The current course that the user is viewing on browser.
      * @returns {Course}
      */
-    static thisOne(){
+    static thisOne() {
         return new Course(currentCourseId())
     }
 }
@@ -134,8 +152,13 @@ class Group {
 
 
 class User {
-    constructor(user_id) {
+    constructor(user_id, name = '', extra = '') {
         this.user_id = user_id
+        this.name = name
+        this.extra = extra
+    }
+    static fromJson(userObj){
+        return new User(userObj.id, userObj.sortable_name, userObj.sis_user_id)
     }
 
 }
