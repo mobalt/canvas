@@ -104,3 +104,14 @@ class Assignment {
 
     }
 }
+
+
+class Category {
+    constructor(category_id) {
+        this.category_id = category_id
+    }
+
+    createGroup(group_name) {
+        return new Group(0)
+    }
+}
