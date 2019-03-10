@@ -29,6 +29,7 @@ function rxSearch(pattern, input, error_message) {
         throw Error(error_message)
 }
 
+
 /**
  * Get csrf token from cookie
  * @returns {string} csrf token
@@ -53,4 +54,42 @@ function currentCourseId() {
         document.location.pathname,
         "Couldn't find course id in current path. Are you on a canvas course page?"
     )
+}
+
+
+
+
+class Course {
+    constructor(course_id) {
+        this.course_id = course_id
+    }
+
+    getGroups() {
+        return []
+    }
+
+    getCategories() {
+        return []
+    }
+
+    getUsers(filters) {
+        return []
+    }
+
+    getStudents() {
+        // enrollment role id 3 = students
+        return this.getUsers({enrollment_role_id: 3})
+    }
+
+    createCategory(category_name) {
+        return new Category(0)
+    }
+
+    /**
+     * The current course that the user is viewing on browser.
+     * @returns {Course}
+     */
+    static thisOne(){
+        return new Course(currentCourseId())
+    }
 }
