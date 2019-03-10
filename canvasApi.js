@@ -177,11 +177,16 @@ class Group {
     }
 
     addMember(user_id) {
-
+        console.log(`Adding member ${user_id} to group ${this.group_id}`)
+        return postItem(
+            `${api_url}/groups/${this.group_id}/memberships`,
+            {user_id},
+            user => new User(user.user_id)
+        )
     }
 
     addManyMembers(list_of_user_ids) {
-
+        return Promise.all(list_of_user_ids.map(this.addMember.bind(this)))
     }
 
     static fromJson(groupObj) {
