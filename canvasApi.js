@@ -76,6 +76,15 @@ async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null
     return rows
 }
 
+async function postItem(url, data, converterFn = null) {
+    const result = await $.post(url, data)
+
+    if (converterFn)
+        return converterFn(result)
+    else
+        return result
+}
+
 
 class Course {
     constructor(course_id) {
