@@ -152,29 +152,12 @@ class Course {
         )
     }
 
-    importGroups(category_name, groupObj){
-
-        async function importGroupSet(category_name, groups) {
-            const {id: category_id} = await createGroupCategory(category_name)
-
-            for (const group_name in groups) {
-
-                const membersList = groups[group_name],
-                    {id: group_id} = await createGroup(group_name, category_id)
-
-                await Promise.all(
-                    membersList.map(
-                        user_id => addMemberToGroup(group_id, user_id)
-                    )
-                )
-            }
+    async importGroups(category_name, groupsObj) {
+        const category = await this.createCategory(category_name)
+        for (const name in groupsObj){
+            const group = await category.createGroup(name)
+            await group.addManyMembers(groupsObj[name])
         }
-
-        importGroupSet('testGroupSet', {
-            alpha: [15656, 18279],
-            beta: [26982],
-            three: [3939, 18752]
-        })
     }
 
     /**
