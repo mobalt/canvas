@@ -76,6 +76,20 @@ async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null
     return rows
 }
 
+async function updateItem(url, data, converterFn = null) {
+    const result = await $.ajax({
+        url,
+        data: JSON.stringify(data),
+        type: 'PUT',
+        contentType: 'application/json',
+    })
+
+    if (converterFn)
+        return converterFn(result)
+    else
+        return result
+}
+
 async function postItem(url, data, converterFn = null) {
     const result = await $.ajax({
         url,
@@ -156,7 +170,10 @@ class Course {
         const category = await this.createCategory(category_name)
         for (const name in groupsObj){
             const group = await category.createGroup(name)
-            await group.addManyMembers(groupsObj[name])
+            // await group.addManyMembers(groupsObj[name])
+            // The version above makes many more requests than new method below
+            // todo: Test if results are the same. If yes, then delete above method.
+            await group.addMembers(groupsObj[name])
         }
     }
 
@@ -216,6 +233,12 @@ class Group {
         )
     }
 
+    addMembers(memberList){
+        return updateItem(
+            `${api_url}/groups/${this.group_id}`,
+            {members: memberList}
+        )
+    }
     addManyMembers(list_of_user_ids) {
         return Promise.all(list_of_user_ids.map(this.addMember.bind(this)))
     }
