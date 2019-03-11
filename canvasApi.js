@@ -247,6 +247,13 @@ class Group {
         return new Group(groupObj.id, groupObj.name)
     }
 
+    getUsers(filters) {
+        return jsonList(
+            `${api_url}/groups/${this.group_id}/users`,
+            filters,
+            User.fromJson
+        )
+    }
 }
 
 
