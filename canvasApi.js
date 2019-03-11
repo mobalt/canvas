@@ -77,7 +77,12 @@ async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null
 }
 
 async function postItem(url, data, converterFn = null) {
-    const result = await $.post(url, data)
+    const result = await $.ajax({
+        url,
+        data: JSON.stringify(data),
+        type: 'POST',
+        contentType: 'application/json',
+    })
 
     if (converterFn)
         return converterFn(result)
