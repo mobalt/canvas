@@ -135,6 +135,24 @@ class Course {
     }
 
     /**
+     * Add extensions for a specific quiz
+     * @example
+     * Course.thisOne().addQuizExtension(4113, [
+     *              {user_id: 15656, extra_attempts: 2},
+     *              {user_id: 18279, extra_time: 75},
+     *          ])
+     * @param quiz_id
+     * @param {[]} extensionList
+     * @return {Promise<*|*>}
+     */
+    addQuizExtension(quiz_id, extensionList) {
+        return postItem(
+            `${api_url}/courses/${currentCourseId()}/quizzes/${quiz_id}/extensions`,
+            {quiz_extensions: extensionList}
+        )
+    }
+
+    /**
      * The current course that the user is viewing on browser.
      * @returns {Course}
      */
@@ -213,3 +231,4 @@ class User {
     }
 
 }
+
