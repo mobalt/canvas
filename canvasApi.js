@@ -195,8 +195,36 @@ class Assignment {
     addExtension(options, students) {
 
     }
+
+    changeGroupCategory(course_id, group_category_id, group_ids) {
+        return updateItem(
+            `${api_url}/courses/${course_id}/assignments/${this.assignment_id}`,
+            {
+                assignment: {
+                    group_category_id,
+                    assignment_overrides: group_ids.map(group_id => {
+                        group_id
+                    })
+                }
+            }
+        )
+    }
 }
 
+/*
+updateItem(
+            `${api_url}/courses/250/assignments/38914`,
+            {
+                assignment: {
+                    group_category_id: 1632,
+					only_visible_to_overrides: true,
+                    assignment_overrides: [
+                        {group_id: "10204", title: "abe","due_at":null,"all_day":false,"all_day_date":null,"unlock_at":null,"lock_at":null}
+                    ]
+                }
+            }
+        )
+ */
 
 class Category {
     constructor(category_id, name = '') {
