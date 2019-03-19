@@ -6,31 +6,33 @@
     "64": "icons8-bug-64.png"
   },
   "permissions": [
-    "https://wustl.instructure.com/",
+    "https://*.instructure.com/",
     "activeTab",
     "declarativeContent"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://wustl.instructure.com/courses/*/quizzes/*/moderate"
+        "https://*.instructure.com/courses/*/quizzes/*/moderate"
       ],
       "js": [
         "jquery.js",
         "moderate_quiz.js"
       ]
-    },{
+    },
+    {
       "matches": [
-        "https://wustl.instructure.com/courses/*/users"
+        "https://*.instructure.com/courses/*/users"
       ],
       "js": [
         "jquery.js",
         "downloadCSV.js",
         "exportStudents.js"
       ]
-    },{
+    },
+    {
       "matches": [
-        "https://wustl.instructure.com/courses/*/quizzes/*/edit"
+        "https://*.instructure.com/courses/*/quizzes/*/edit"
       ],
       "js": [
         "jquery.js",
