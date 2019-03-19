@@ -113,7 +113,7 @@ class Course {
     getGroups() {
         return jsonList(
             `${api_url}/courses/${this.course_id}/groups`,
-            {include: ['group_category']},
+            {include: ['group_category', 'users']},
             Group.fromJson
         )
     }
@@ -168,7 +168,7 @@ class Course {
 
     async importGroups(category_name, groupsObj) {
         const category = await this.createCategory(category_name)
-        for (const name in groupsObj){
+        for (const name in groupsObj) {
             const group = await category.createGroup(name)
             // await group.addManyMembers(groupsObj[name])
             // The version above makes many more requests than new method below
@@ -233,12 +233,13 @@ class Group {
         )
     }
 
-    addMembers(memberList){
+    addMembers(memberList) {
         return updateItem(
             `${api_url}/groups/${this.group_id}`,
             {members: memberList}
         )
     }
+
     addManyMembers(list_of_user_ids) {
         return Promise.all(list_of_user_ids.map(this.addMember.bind(this)))
     }
