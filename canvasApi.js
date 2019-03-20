@@ -56,6 +56,18 @@ function currentCourseId() {
     )
 }
 
+/**
+ * Get current quiz id from current URL
+ * @example in '...api/v1/courses/283/quizzes/33229' would return 33229
+ * @returns {string}
+ */
+function currentQuizId() {
+    return rxSearch(
+        /^\/courses\/\d+\/quizzes\/(\d+)/i,
+        document.location.pathname,
+        "Couldn't find quiz id in current path. Are you on a canvas course page?"
+    )
+}
 
 async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null) {
     if (!data.page) data.page = 1
