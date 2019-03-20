@@ -114,7 +114,7 @@ class Course {
         return jsonList(
             `${api_url}/courses/${this.course_id}/groups`,
             {include: ['group_category', 'users']},
-            Group.fromJson
+            UserGroup.fromJson
         )
     }
 
@@ -236,7 +236,7 @@ class Category {
         return postItem(
             `${api_url}/group_categories/${this.category_id}/groups`,
             {name: group_name},
-            Group.fromJson
+            UserGroup.fromJson
         )
     }
 
@@ -246,7 +246,7 @@ class Category {
 }
 
 
-class Group {
+class UserGroup {
     constructor(group_id, name = '') {
         this.group_id = group_id
         this.name = name
@@ -273,7 +273,7 @@ class Group {
     }
 
     static fromJson(groupObj) {
-        return new Group(groupObj.id, groupObj.name)
+        return new UserGroup(groupObj.id, groupObj.name)
     }
 
     getUsers(filters) {

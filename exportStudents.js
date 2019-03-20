@@ -41,7 +41,7 @@ $('#download_csv').click(function () {
     let csvResults = [['sis_id', 'canvas_id', 'name']]
     
     //filename = classId_students_date.csv
-    let filename = apiUrl.match(/\d{2,}/)[0] +
+    let filename = apiUrl.match(/\d+/)[0] +
         '_students_' +
         todaysDate() +
         '.csv'
