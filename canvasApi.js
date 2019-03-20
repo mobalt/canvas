@@ -221,22 +221,17 @@ class Assignment {
             }
         )
     }
+
+    addOverride(student_ids, course_id = currentCourseId()) {
+        return postItem(
+            `${api_url}/courses/${course_id}/assignments/${this.assignment_id}/overrides`,
+            {assignment_override: {student_ids, title: `${student_ids.length} student(s)`}}
+        ).then(() => {
+            window.location.href = window.location.href
+        })
+    }
 }
 
-/*
-updateItem(
-            `${api_url}/courses/250/assignments/38914`,
-            {
-                assignment: {
-                    group_category_id: 1632,
-					only_visible_to_overrides: true,
-                    assignment_overrides: [
-                        {group_id: "10204", title: "abe","due_at":null,"all_day":false,"all_day_date":null,"unlock_at":null,"lock_at":null}
-                    ]
-                }
-            }
-        )
- */
 class Quiz {
     constructor(quiz_id) {
         this.quiz_id = quiz_id

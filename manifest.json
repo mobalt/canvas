@@ -29,6 +29,16 @@
     },
     {
       "matches": [
+        "*://*.instructure.com/courses/*/quizzes/*"
+      ],
+      "js": [
+        "jquery.js",
+        "canvasApi.js",
+        "quizAssign.js"
+      ]
+    },
+    {
+      "matches": [
         "*://*.instructure.com/courses/*/quizzes/*/edit"
       ],
       "js": [
