@@ -6,14 +6,11 @@
     "64": "icons8-bug-64.png"
   },
   "permissions": [
-    "https://*.instructure.com/",
-    "activeTab",
-    "declarativeContent"
   ],
   "content_scripts": [
     {
       "matches": [
-        "https://*.instructure.com/courses/*/quizzes/*/moderate"
+        "*://*.instructure.com/courses/*/quizzes/*/moderate"
       ],
       "js": [
         "jquery.js",
@@ -22,7 +19,7 @@
     },
     {
       "matches": [
-        "https://*.instructure.com/courses/*/users"
+        "*://*.instructure.com/courses/*/users"
       ],
       "js": [
         "jquery.js",
@@ -32,7 +29,7 @@
     },
     {
       "matches": [
-        "https://*.instructure.com/courses/*/quizzes/*/edit"
+        "*://*.instructure.com/courses/*/quizzes/*/edit"
       ],
       "js": [
         "jquery.js",
