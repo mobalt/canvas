@@ -242,6 +242,13 @@ class Quiz {
         this.quiz_id = quiz_id
     }
 
+    getAssignment(course_id = currentCourseId()) {
+        return $.getJSON(`${api_url}/courses/${course_id}/quizzes/${this.quiz_id}`)
+            .then(({assignment_id}) => {
+                return new Assignment(assignment_id)
+            })
+    }
+
     static thisOne() {
         return new Quiz(currentQuizId())
     }
