@@ -237,6 +237,15 @@ updateItem(
             }
         )
  */
+class Quiz {
+    constructor(quiz_id) {
+        this.quiz_id = quiz_id
+    }
+
+    static thisOne() {
+        return new Quiz(currentQuizId())
+    }
+}
 
 class Category {
     constructor(category_id, name = '') {
