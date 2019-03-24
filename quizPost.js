@@ -196,9 +196,9 @@ const postPayload = {
 const extensionURL = getGroupsURL()
 const qURL = getQuestionsURL()
 
-const btn = $('<li><a>YAML import</a></li>')
-$('#quiz_tabs_tab_list').append(btn)
-btn.click(function () {
+const yaml_import_btn = $('<li><a>YAML import</a></li>')
+$('#quiz_tabs_tab_list').append(yaml_import_btn)
+yaml_import_btn.click(function () {
     $('#questions_tab').html(newForm)
     
     // $('#student_list').change(cleanInput)

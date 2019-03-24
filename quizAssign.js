@@ -36,9 +36,9 @@ const override_form = `
 </div>
 `
 
-const btn = $('<a class="btn btn-secondary">Add Override List</a>')
-$('.preview_quiz_button').append(btn)
-btn.click(function () {
+const show_override_btn = $('<a class="btn btn-secondary">Add Override List</a>')
+$('.preview_quiz_button').append(show_override_btn)
+show_override_btn.click(function () {
     const assignmentLookup = Quiz.thisOne().getAssignment()
     $('#quiz_show > header').after(override_form)
     $('#overlay_submit_btn').click(function (){
