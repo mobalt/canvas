@@ -5,5 +5,15 @@
   "main": "index.js",
   "repository": "https://github.com/mobalt/canvas",
   "author": "Moises Baltazar <mail@moisesb.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
 }
