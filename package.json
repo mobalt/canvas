@@ -1,0 +1,9 @@
+{
+  "name": "CanvasTool",
+  "version": "0.1.0",
+  "description": "An extension to streamline some of Canvas' functionality.",
+  "main": "index.js",
+  "repository": "https://github.com/mobalt/canvas",
+  "author": "Moises Baltazar <mail@moisesb.com>",
+  "license": "MIT"
+}
