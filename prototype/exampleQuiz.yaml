@@ -1,0 +1,81 @@
+- type: Text
+  text: |-
+    <table dir="ltr" align="left" width="276" cellspacing="0" cellpadding="5">
+    <tbody>
+    <tr valign="top">
+    <td width="138"> <p align="center"><span style="color: #000000;"><strong>Variable</strong></span></p> </td>
+    <td width="56"> <p align="center"><span style="color: #000000;"><strong>Beta</strong></span></p> </td>
+    <td width="49"> <p align="center"><span style="color: #000000;"><i><strong>p</strong></i></span></p> </td>
+    </tr>
+    <tr valign="top">
+    <td width="138"> <p><span style="color: #000000;">Income</span></p> </td>
+    <td width="56"> <p align="center"><span style="color: #000000;">.33</span></p> </td>
+    <td width="49"> <p align="center"><span style="color: #000000;">.03</span></p> </td>
+    </tr>
+    <tr valign="top">
+    <td width="138"> <p><span style="color: #000000;">Number of arguments</span></p> </td>
+    <td width="56"> <p align="center"><span style="color: #000000;">&ndash;.48</span></p> </td>
+    <td width="49"> <p align="center"><span style="color: #000000;">.01</span></p> </td>
+    </tr>
+    <tr valign="top">
+    <td width="138"> <p><span style="color: #000000;">Life satisfaction</span></p> </td>
+    <td width="56"> <p align="center"><span style="color: #000000;">.13</span></p> </td>
+    <td width="49"> <p align="center"><span style="color: #000000;">.81</span></p> </td>
+    </tr>
+    </tbody>
+    </table>
+    <p>Look at the table above for these 3 next questions.</p>
+- type: Multiple Choice
+  points: 1
+  text: "<p> Multiple Choice Text </p>"
+  answers:
+    - <Correct One
+    - Wrong 1
+    - Wrong 2
+- type: Multiple Answers
+  text: <p> Two or more? (select all that apply)</p>
+  answers:
+    - Wrong 1
+    - < Right 1
+    - Wrong 2
+    - <Right 2
+    - Wrong 3
+- type: Fill-in-blank
+  text: |
+    Name one group of people that receives special protections when participating in research:
+  answers:
+    - Children
+    - Prisoners
+    - Mentally handicapped
+- type: Multiple Blanks
+  text: <p>Roses are [color1], violets are [color2]</p>
+  answers:
+    color1:
+      - red
+      - pink
+      - white
+    color2:
+      - blue
+      - multi colored
+      - violet
+- type: Multiple Dropdowns
+  text: Roses = [c1], Violets = [c2]
+  answers:
+    c1:
+      - <correct 1
+      - Wrong 1
+      - wrong 2
+    c2:
+      - < Correct
+      - Nope
+      - nada
+
+- type: Essay
+  name: EssayQName
+  points: 9
+  text: Essay prompt.
+- type: True-false
+  text: is true?
+  answer: false
+- type: File Upload
+  text: <p> Please upload file </p>
