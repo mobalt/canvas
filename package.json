@@ -7,8 +7,8 @@
   "author": "Moises Baltazar <mail@moisesb.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "prettier-eslint 'src/**/*.*' --list-different --write",
-    "lint:check": "prettier-eslint 'src/**/*.*' --list-different; exit 0",
+    "lint": "prettier-eslint 'src/**/*.{js,json,md}' --list-different --write",
+    "lint:check": "prettier-eslint 'src/**/*.{js,json,md}' --list-different; exit 0",
     "build": "babel src --out-dir=dist",
     "dev": "babel-node ./src/bin/www",
     "test": "mocha"
