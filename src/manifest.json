@@ -3,7 +3,7 @@
   "description": "Adds functionality to Canvas LMS",
   "version": "2.0.0",
   "icons": {
-    "64": "icons8-bug-64.png"
+    "64": "assets/icons8-bug-64.png"
   },
   "permissions": ["contextMenus"],
   "background": {
