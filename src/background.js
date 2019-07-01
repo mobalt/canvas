@@ -46,7 +46,7 @@ const T = {
 
 chrome.contextMenus.onClicked.addListener(onClickHandler)
 
-const menuTree = {
+const menu = matrix({
     '/users': {
         'Student_List ': (url, tab) => {
             alert('test')
@@ -61,33 +61,31 @@ const menuTree = {
         Moderate_quiz(url, tab) {},
         Quiz_Overrides(url, tab) {},
     },
-}
+})
+
+const handlers = T.dict(menu, 1, 2)
 
 // Set up context menu
 chrome.runtime.onInstalled.addListener(function() {
-    for (const urlPattern in menuTree) {
-        for (const fnName in menuTree[urlPattern]) {
-            const fn = menuTree[urlPattern][fnName]
-            handlers[fnName] = fn
-            const title = fnName.replace('_', ' ')
+    T.eachRow(menu, (url, id) => {
+        const title = id.replace('_', ' ')
+        const pattern = ['*://*/courses/*' + url]
 
-            // Right-click anywhere on page
-            chrome.contextMenus.create({
-                id: `${fnName}:page`,
-                title,
-                contexts: ['page'],
-                documentUrlPatterns: [`*://*/courses/*${urlPattern}`],
-            })
+        // Right-click anywhere on page
+        chrome.contextMenus.create({
+            id: id + ':page',
+            title,
+            documentUrlPatterns: pattern,
+        })
 
-            // Right-click on links
-            chrome.contextMenus.create({
-                id: `${fnName}:link`,
-                title,
-                contexts: ['link'],
-                targetUrlPatterns: [`*://*/courses/*${urlPattern}`],
-            })
-        }
-    }
+        // Right-click on a link
+        chrome.contextMenus.create({
+            id: id + ':link',
+            title,
+            contexts: ['link'],
+            targetUrlPatterns: pattern,
+        })
+
+    })
 })
 
-const handlers = {}
