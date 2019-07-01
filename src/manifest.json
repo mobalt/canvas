@@ -5,7 +5,7 @@
   "icons": {
     "64": "assets/icons8-bug-64.png"
   },
-  "permissions": ["contextMenus"],
+  "permissions": ["contextMenus", "activeTab"],
   "background": {
     "persistent": false,
     "scripts": ["background.js"]

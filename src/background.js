@@ -4,7 +4,7 @@ function onClickHandler(info, tab) {
     console.log('tab: ' + JSON.stringify(tab))
     const [fn, type] = info.menuItemId.replace(' ', '_').split(':')
     const url = info.linkUrl || info.pageUrl
-    handlers[fn](url, tab)
+    handlers[fn](url, tab.id, tab)
 }
 
 function matrix(dict, path = []) {
@@ -45,6 +45,16 @@ const T = {
 }
 
 chrome.contextMenus.onClicked.addListener(onClickHandler)
+
+function loadFiles(...files) {
+    for (const file of files) {
+        chrome.tabs.executeScript({ file })
+    }
+}
+
+function reloadPage(){
+    chrome.tabs.reload()
+}
 
 const menu = matrix({
     '/users': {
