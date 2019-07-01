@@ -1,5 +1,5 @@
 class Group {
-    constructor (name, points, pick) {
+    constructor(name, points, pick) {
         this.name = name || 'group'
         this.question_points = points || 1
         this.pick_count = pick
@@ -7,12 +7,12 @@ class Group {
         this.questions = []
         this.group_id = 5
     }
-    
-    addQuestion (question) {
+
+    addQuestion(question) {
         this.questions.push(question)
     }
-    
-    toJSON () {
+
+    toJSON() {
         this.questions.forEach(q => {
             q.quiz_group_id = this.group_id
         })
@@ -21,7 +21,7 @@ class Group {
 }
 
 class Answer {
-    constructor (text = '') {
+    constructor(text = '') {
         this.answer_text = text
         this.answer_weight = 0
         this.answer_error_margin = null
@@ -41,14 +41,14 @@ class Answer {
         this.answer_match_left_html = null
         this.answer_comment_html = null
     }
-    
-    correctAnswer () {
+
+    correctAnswer() {
         this.answer_weight = 100
     }
 }
 
 class Question {
-    constructor (type, text, name = 'QUESTION', points = 1) {
+    constructor(type, text, name = 'QUESTION', points = 1) {
         this.question_name = name
         this.question_text = text
         this.points_possible = +points
@@ -62,120 +62,104 @@ class Question {
         this.text_after_answers = null
         this.matching_answer_incorrect_matches = null
     }
-    
-    addAnswer (text = '', isCorrect = false) {
-        if (!this.answers)
-            this.answers = []
+
+    addAnswer(text = '', isCorrect = false) {
+        if (!this.answers) this.answers = []
         const newAnswer = new Answer(text)
-        if (isCorrect)
-            newAnswer.correctAnswer()
+        if (isCorrect) newAnswer.correctAnswer()
         this.answers.push(newAnswer)
         return newAnswer
     }
 }
 
 class TextOnly extends Question {
-    constructor (text) {
+    constructor(text) {
         super('text_only_question', text, 'TextOnly', 0)
     }
 }
 
 class Essay extends Question {
-    constructor (text, name, points) {
+    constructor(text, name, points) {
         super('essay_question', text, name, points)
     }
 }
 
 class FileUpload extends Question {
-    constructor (text, name, points) {
+    constructor(text, name, points) {
         super('file_upload_question', text, name, points)
     }
 }
 
-function parseAnswer (text) {
+function parseAnswer(text) {
     const parts = /^ *([<])? *(.+?) *$/.exec(text)
     const answerText = parts[2]
     const isCorrect = !!parts[1]
-    
+
     return [answerText, isCorrect]
 }
 
 class MultipleChoice extends Question {
-    constructor (text, name, points, answers) {
+    constructor(text, name, points, answers) {
         super('multiple_choice_question', text, name, points)
-        answers
-            .map(parseAnswer)
-            .map(([answerText, isCorrect]) => {
-                const ans = this.addAnswer(answerText)
-                if (isCorrect)
-                    ans.correctAnswer()
-            })
+        answers.map(parseAnswer).map(([answerText, isCorrect]) => {
+            const ans = this.addAnswer(answerText)
+            if (isCorrect) ans.correctAnswer()
+        })
     }
-    
 }
 
 class MultipleAnswer extends Question {
-    constructor (text, name, points, answers) {
+    constructor(text, name, points, answers) {
         super('multiple_answers_question', text, name, points)
-        answers
-            .map(parseAnswer)
-            .map(([answerText, isCorrect]) => {
-                const ans = this.addAnswer(answerText)
-                if (isCorrect)
-                    ans.correctAnswer()
-            })
+        answers.map(parseAnswer).map(([answerText, isCorrect]) => {
+            const ans = this.addAnswer(answerText)
+            if (isCorrect) ans.correctAnswer()
+        })
     }
 }
 
 class FillInBlank extends Question {
-    constructor (text, name, points, answers) {
+    constructor(text, name, points, answers) {
         super('short_answer_question', text, name, points)
-        answers
-            .forEach(answerText => this.addAnswer(answerText))
+        answers.forEach(answerText => this.addAnswer(answerText))
     }
-    
-    addAnswer (text = '') {
+
+    addAnswer(text = '') {
         return super.addAnswer(text).correctAnswer()
     }
 }
 
 class MultipleBlanks extends Question {
-    constructor (text, name, points, answers) {
+    constructor(text, name, points, answers) {
         super('fill_in_multiple_blanks_question', text, name, points)
-        Object.entries(answers)
-              .forEach(([blank_id, subAnswers]) => {
-                  subAnswers.forEach(answerText => {
-                      this.addAnswer(answerText, blank_id)
-                  })
-              })
+        Object.entries(answers).forEach(([blank_id, subAnswers]) => {
+            subAnswers.forEach(answerText => {
+                this.addAnswer(answerText, blank_id)
+            })
+        })
     }
-    
-    addAnswer (text = '', blank_id) {
+
+    addAnswer(text = '', blank_id) {
         let answer = super.addAnswer(text)
         answer.blank_id = blank_id
         answer.correctAnswer()
         return answer
-        
     }
 }
 
 class MultipleDropDowns extends Question {
-    constructor (text, name, points, answers) {
+    constructor(text, name, points, answers) {
         super('multiple_dropdowns_question', text, name, points)
-        
-        Object.entries(answers)
-              .forEach(([blank_id, subAnswers]) => {
-                  subAnswers
-                      .map(parseAnswer)
-                      .forEach(([answerText, isCorrect]) => {
-                          const answer = this.addAnswer(answerText, blank_id)
-                          if (isCorrect)
-                              answer.correctAnswer()
-                      })
-              })
+
+        Object.entries(answers).forEach(([blank_id, subAnswers]) => {
+            subAnswers.map(parseAnswer).forEach(([answerText, isCorrect]) => {
+                const answer = this.addAnswer(answerText, blank_id)
+                if (isCorrect) answer.correctAnswer()
+            })
+        })
     }
-    
-    addAnswer (text = '', blank_id) {
+
+    addAnswer(text = '', blank_id) {
         let answer = super.addAnswer(text)
         answer.blank_id = blank_id
         return answer
@@ -183,18 +167,15 @@ class MultipleDropDowns extends Question {
 }
 
 class TrueFalse extends Question {
-    constructor (text, name, points, isTrue) {
+    constructor(text, name, points, isTrue) {
         super('true_false_question', text, name, points)
         const t = this.addAnswer('True')
         const f = this.addAnswer('False')
-        if (isTrue)
-            t.correctAnswer()
-        else
-            f.correctAnswer()
+        if (isTrue) t.correctAnswer()
+        else f.correctAnswer()
     }
 }
 
 class Matching extends Question {
     //todo: implement this
 }
-

@@ -4,14 +4,12 @@
  */
 const api_url = `${document.location.origin}/api/v1`
 
-
 // Add csrf token to all future AJAX requests
 $.ajaxSetup({
     headers: {
         'X-CSRF-Token': tokenFromCookie(),
-    }
-});
-
+    },
+})
 
 /**
  * Searches for a regular expression pattern in a string.
@@ -23,12 +21,9 @@ $.ajaxSetup({
  */
 function rxSearch(pattern, input, error_message) {
     const match = pattern.exec(input)
-    if (match)
-        return match[1]
-    else
-        throw Error(error_message)
+    if (match) return match[1]
+    else throw Error(error_message)
 }
-
 
 /**
  * Get csrf token from cookie
@@ -38,11 +33,10 @@ function tokenFromCookie() {
     const token = rxSearch(
         /_csrf_token=(\S+)/,
         document.cookie,
-        "Couldn't find csrf token in cookie. This is a fatal error."
+        "Couldn't find csrf token in cookie. This is a fatal error.",
     )
     return decodeURIComponent(token)
 }
-
 
 /**
  * Get current course id from current URL
@@ -52,7 +46,7 @@ function currentCourseId() {
     return rxSearch(
         /^\/courses\/(\d+)/i,
         document.location.pathname,
-        "Couldn't find course id in current path. Are you on a canvas course page?"
+        "Couldn't find course id in current path. Are you on a canvas course page?",
     )
 }
 
@@ -65,11 +59,15 @@ function currentQuizId() {
     return rxSearch(
         /^\/courses\/\d+\/quizzes\/(\d+)/i,
         document.location.pathname,
-        "Couldn't find quiz id in current path. Are you on a canvas course page?"
+        "Couldn't find quiz id in current path. Are you on a canvas course page?",
     )
 }
 
-async function jsonList(url, data = {per_page: 100, page: 1}, converterFn = null) {
+async function jsonList(
+    url,
+    data = { per_page: 100, page: 1 },
+    converterFn = null,
+) {
     if (!data.page) data.page = 1
     if (!data.per_page) data.per_page = 100
 
@@ -96,10 +94,8 @@ async function updateItem(url, data, converterFn = null) {
         contentType: 'application/json',
     })
 
-    if (converterFn)
-        return converterFn(result)
-    else
-        return result
+    if (converterFn) return converterFn(result)
+    else return result
 }
 
 async function postItem(url, data, converterFn = null) {
@@ -110,12 +106,9 @@ async function postItem(url, data, converterFn = null) {
         contentType: 'application/json',
     })
 
-    if (converterFn)
-        return converterFn(result)
-    else
-        return result
+    if (converterFn) return converterFn(result)
+    else return result
 }
-
 
 class Course {
     constructor(course_id) {
@@ -125,8 +118,8 @@ class Course {
     getGroups() {
         return jsonList(
             `${api_url}/courses/${this.course_id}/groups`,
-            {include: ['group_category', 'users']},
-            UserGroup.fromJson
+            { include: ['group_category', 'users'] },
+            UserGroup.fromJson,
         )
     }
 
@@ -134,7 +127,7 @@ class Course {
         return jsonList(
             `${api_url}/courses/${this.course_id}/group_categories`,
             undefined,
-            Category.fromJson
+            Category.fromJson,
         )
     }
 
@@ -142,21 +135,20 @@ class Course {
         return jsonList(
             `${api_url}/courses/${this.course_id}/users`,
             filters,
-            User.fromJson
+            User.fromJson,
         )
-
     }
 
     getStudents() {
         // limit results to students only
-        return this.getUsers({enrollment_role_id: 3})
+        return this.getUsers({ enrollment_role_id: 3 })
     }
 
     createCategory(category_name) {
         return postItem(
             `${api_url}/courses/${this.course_id}/group_categories`,
-            {name: category_name},
-            Category.fromJson
+            { name: category_name },
+            Category.fromJson,
         )
     }
 
@@ -174,7 +166,7 @@ class Course {
     addQuizExtension(quiz_id, extensionList) {
         return postItem(
             `${api_url}/courses/${currentCourseId()}/quizzes/${quiz_id}/extensions`,
-            {quiz_extensions: extensionList}
+            { quiz_extensions: extensionList },
         )
     }
 
@@ -198,15 +190,12 @@ class Course {
     }
 }
 
-
 class Assignment {
     constructor(assignment_id) {
         this.assignment_id = assignment_id
     }
 
-    addExtension(options, students) {
-
-    }
+    addExtension(options, students) {}
 
     changeGroupCategory(course_id, group_category_id, group_ids) {
         return updateItem(
@@ -216,16 +205,21 @@ class Assignment {
                     group_category_id,
                     assignment_overrides: group_ids.map(group_id => {
                         group_id
-                    })
-                }
-            }
+                    }),
+                },
+            },
         )
     }
 
     addOverride(student_ids, course_id = currentCourseId()) {
         return postItem(
             `${api_url}/courses/${course_id}/assignments/${this.assignment_id}/overrides`,
-            {assignment_override: {student_ids, title: `${student_ids.length} student(s)`}}
+            {
+                assignment_override: {
+                    student_ids,
+                    title: `${student_ids.length} student(s)`,
+                },
+            },
         ).then(() => {
             window.location.href = window.location.href
         })
@@ -238,10 +232,11 @@ class Quiz {
     }
 
     getAssignment(course_id = currentCourseId()) {
-        return $.getJSON(`${api_url}/courses/${course_id}/quizzes/${this.quiz_id}`)
-            .then(({assignment_id}) => {
-                return new Assignment(assignment_id)
-            })
+        return $.getJSON(
+            `${api_url}/courses/${course_id}/quizzes/${this.quiz_id}`,
+        ).then(({ assignment_id }) => {
+            return new Assignment(assignment_id)
+        })
     }
 
     static thisOne() {
@@ -258,8 +253,8 @@ class Category {
     createGroup(group_name) {
         return postItem(
             `${api_url}/group_categories/${this.category_id}/groups`,
-            {name: group_name},
-            UserGroup.fromJson
+            { name: group_name },
+            UserGroup.fromJson,
         )
     }
 
@@ -267,7 +262,6 @@ class Category {
         return new Category(categoryObj.id, categoryObj.name)
     }
 }
-
 
 class UserGroup {
     constructor(group_id, name = '') {
@@ -279,16 +273,15 @@ class UserGroup {
         console.log(`Adding member ${user_id} to group ${this.group_id}`)
         return postItem(
             `${api_url}/groups/${this.group_id}/memberships`,
-            {user_id},
-            user => new User(user.user_id)
+            { user_id },
+            user => new User(user.user_id),
         )
     }
 
     addMembers(memberList) {
-        return updateItem(
-            `${api_url}/groups/${this.group_id}`,
-            {members: memberList}
-        )
+        return updateItem(`${api_url}/groups/${this.group_id}`, {
+            members: memberList,
+        })
     }
 
     addManyMembers(list_of_user_ids) {
@@ -303,11 +296,10 @@ class UserGroup {
         return jsonList(
             `${api_url}/groups/${this.group_id}/users`,
             filters,
-            User.fromJson
+            User.fromJson,
         )
     }
 }
-
 
 class User {
     constructor(user_id, name = '', extra = '') {
@@ -319,6 +311,4 @@ class User {
     static fromJson(userObj) {
         return new User(userObj.id, userObj.sortable_name, userObj.sis_user_id)
     }
-
 }
-

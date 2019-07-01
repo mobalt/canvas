@@ -1,32 +1,30 @@
 const typeMap = {
-    'text': TextOnly,
-    'essay': Essay,
-    'fileupload': FileUpload,
-    'multiplechoice': MultipleChoice,
-    'multipleanswer': MultipleAnswer,
-    'multipleanswers': MultipleAnswer,
-    'fillinblank': FillInBlank,
-    'singleblank': FillInBlank,
-    'multipleblanks': MultipleBlanks,
-    'multipledropdowns': MultipleDropDowns,
-    'truefalse': TrueFalse,
-    'matching': Matching,
+    text: TextOnly,
+    essay: Essay,
+    fileupload: FileUpload,
+    multiplechoice: MultipleChoice,
+    multipleanswer: MultipleAnswer,
+    multipleanswers: MultipleAnswer,
+    fillinblank: FillInBlank,
+    singleblank: FillInBlank,
+    multipleblanks: MultipleBlanks,
+    multipledropdowns: MultipleDropDowns,
+    truefalse: TrueFalse,
+    matching: Matching,
 }
 
-function resolve (item) {
-    let {type, name, text, points, answers, answer, pick, questions} = item
-    
-    if (!points)
-        points = 1
-    
+function resolve(item) {
+    let { type, name, text, points, answers, answer, pick, questions } = item
+
+    if (!points) points = 1
+
     let result
-    
+
     if (type === 'group') {
         result = new Group(name, points, pick)
         // loop over all nested questions
         result.questions = questions.map(resolve)
     } else {
-        
         if (!type) {
             // todo: error since that's important to all questions
         }
@@ -38,35 +36,30 @@ function resolve (item) {
         if (!text) {
             // todo: error since that's important to all questions
         }
-        if (!points)
-            points = 1
-        if (!name)
-            name = 'Question'
-        if (answer)
-            answers = answer
+        if (!points) points = 1
+        if (!name) name = 'Question'
+        if (answer) answers = answer
         result = new type(text, name, points, answers)
     }
     return result
 }
 
-function getGroupsURL () {
+function getGroupsURL() {
     const currentURL = document.location.href
     return currentURL.replace(/[^\/]+$/, 'groups')
-    
 }
 
-function getQuestionsURL () {
+function getQuestionsURL() {
     const currentURL = document.location.href
     return currentURL.replace(/[^\/]+$/, 'questions')
 }
 
-function getPreviewURL(){
+function getPreviewURL() {
     const currentURL = document.location.href
     return currentURL.replace(/[^\/]+$/, 'take?preview=1')
-    
 }
 
-function getToken () {
+function getToken() {
     return $('#quiz_options_form > input[name="authenticity_token"]').val()
 }
 
@@ -198,82 +191,88 @@ const qURL = getQuestionsURL()
 
 const yaml_import_btn = $('<li><a>YAML import</a></li>')
 $('#quiz_tabs_tab_list').append(yaml_import_btn)
-yaml_import_btn.click(function () {
+yaml_import_btn.click(function() {
     $('#questions_tab').html(newForm)
-    
+
     // $('#student_list').change(cleanInput)
-    
-    $('#mod_update').click(function () {
+
+    $('#mod_update').click(function() {
         $(this).attr('disabled', 'disabled')
         // cleanInput()
-    
+
         const val = $('#student_list').val()
         let quiz = jsyaml.load(val)
         quiz = quiz.map(resolve)
         //todo: create groups, update questions with groups
         let qty = 0
         quiz.forEach(question => {
-            qty ++
+            qty++
             let payload = {
                 ...postPayload,
                 question,
             }
             $.post(qURL, payload)
-                .fail(function (data) {
+                .fail(function(data) {
                     let h = $('#display_results').html()
                     h += question + '\n' + data + '\n'
                     $('#display_results').html(h)
                 })
-                .always(function () {
+                .always(function() {
                     qty--
-                    if (!qty){
+                    if (!qty) {
                         let h = $('#display_results').html()
-                        h = `DONE!<br> <a href="${getPreviewURL()}">View Preview</a><br>check if errors below: \n` + h
+                        h =
+                            `DONE!<br> <a href="${getPreviewURL()}">View Preview</a><br>check if errors below: \n` +
+                            h
                         $('#display_results').html(h)
                     }
                 })
         })
-        
+
         //todo: submit questions
         // postPayload['extra_attempts'] = +$('#extra_attempts').val()
-        
+
         // submitExtensions()
-        
     })
 })
 
 let submittedAlready = false
 
-function submitExtensions () {
-    if (submittedAlready)
-        return false
+function submitExtensions() {
+    if (submittedAlready) return false
     submittedAlready = true
-    
-    const students = $('#student_list').val().split(' ')
+
+    const students = $('#student_list')
+        .val()
+        .split(' ')
     const results = $('#display_results')
     let qty = 0
-    students.forEach(function (studentID, index, array) {
+    students.forEach(function(studentID, index, array) {
         qty++
         results.append(`<span value="${studentID}">${studentID}</span>`)
         $.post(extensionURL + studentID, postPayload)
-         .done(function (data) {
-             results.find(`[value="${studentID}"]`).addClass('success')
-         })
-         .fail(function (data) {
-             results.find(`[value="${studentID}"]`).addClass('failed')
-         })
-         .always(function () {
-             qty--
-         })
+            .done(function(data) {
+                results.find(`[value="${studentID}"]`).addClass('success')
+            })
+            .fail(function(data) {
+                results.find(`[value="${studentID}"]`).addClass('failed')
+            })
+            .always(function() {
+                qty--
+            })
     })
 }
 
-function cleanInput () {
+function cleanInput() {
     const textarea = $('#student_list')
-    const cleanValue = textarea.val().replace(/\D+/g, ' ').trim()
+    const cleanValue = textarea
+        .val()
+        .replace(/\D+/g, ' ')
+        .trim()
     textarea.val(cleanValue)
-    $('#mod_update')
-        .html('Submit Quiz Extensions for <b>' +
+    $('#mod_update').html(
+        'Submit Quiz Extensions for <b>' +
             cleanValue.split(' ').length +
-            '</b> Students')
+            '</b> Students',
+    )
 }

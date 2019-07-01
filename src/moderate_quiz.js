@@ -77,13 +77,12 @@ const newForm = `
 </div>
 `
 
-function getExtensionUrl () {
+function getExtensionUrl() {
     const currentURL = document.location.href
     return currentURL.substring(0, currentURL.length - 8) + 'extensions/'
-    
 }
 
-function getToken () {
+function getToken() {
     return $('#moderate_student_form > input[name="authenticity_token"]').val()
 }
 
@@ -99,57 +98,63 @@ const extensionURL = getExtensionUrl()
 // 'https://wustl.instructure.com/api/v1/courses/6225/users.json?per_page=100&enrollment_role_id=3&page=6'
 // $('h1').html(getExtensionUrl() + 'Test')
 
-$('h1').append('<button>Bulk</button>').click(function () {
-    $('#content').html(newForm)
-    
-    $('#student_list').change(cleanInput)
-    
-    $('#mod_update').click(function () {
-        $(this).attr('disabled', 'disabled')
-        cleanInput()
-        postPayload['extra_attempts'] = +$('#extra_attempts').val()
-        postPayload['extra_time'] = +$('#extra_time').val()
-        postPayload['manually_unlocked'] = +$('#manually_unlocked')
-            .prop('checked')
-        
-        
-        submitExtensions()
-        
+$('h1')
+    .append('<button>Bulk</button>')
+    .click(function() {
+        $('#content').html(newForm)
+
+        $('#student_list').change(cleanInput)
+
+        $('#mod_update').click(function() {
+            $(this).attr('disabled', 'disabled')
+            cleanInput()
+            postPayload['extra_attempts'] = +$('#extra_attempts').val()
+            postPayload['extra_time'] = +$('#extra_time').val()
+            postPayload['manually_unlocked'] = +$('#manually_unlocked').prop(
+                'checked',
+            )
+
+            submitExtensions()
+        })
     })
-})
 
 let submittedAlready = false
 
-function submitExtensions () {
-    if (submittedAlready)
-        return false
+function submitExtensions() {
+    if (submittedAlready) return false
     submittedAlready = true
-    
-    const students = $('#student_list').val().split(' ')
+
+    const students = $('#student_list')
+        .val()
+        .split(' ')
     const results = $('#display_results')
     let qty = 0
-    students.forEach(function (studentID, index, array) {
+    students.forEach(function(studentID, index, array) {
         qty++
         results.append(`<span value="${studentID}">${studentID}</span>`)
         $.post(extensionURL + studentID, postPayload)
-         .done(function (data) {
-             results.find(`[value="${studentID}"]`).addClass('success')
-         })
-         .fail(function (data) {
-             results.find(`[value="${studentID}"]`).addClass('failed')
-         })
-         .always(function () {
-             qty--
-         })
+            .done(function(data) {
+                results.find(`[value="${studentID}"]`).addClass('success')
+            })
+            .fail(function(data) {
+                results.find(`[value="${studentID}"]`).addClass('failed')
+            })
+            .always(function() {
+                qty--
+            })
     })
 }
 
-function cleanInput () {
+function cleanInput() {
     const textarea = $('#student_list')
-    const cleanValue = textarea.val().replace(/\D+/g, ' ').trim()
+    const cleanValue = textarea
+        .val()
+        .replace(/\D+/g, ' ')
+        .trim()
     textarea.val(cleanValue)
-    $('#mod_update')
-        .html('Submit Quiz Extensions for <b>' +
+    $('#mod_update').html(
+        'Submit Quiz Extensions for <b>' +
             cleanValue.split(' ').length +
-            '</b> Students')
+            '</b> Students',
+    )
 }

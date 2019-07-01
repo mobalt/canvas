@@ -52,14 +52,14 @@ function loadFiles(...files) {
     }
 }
 
-function reloadPage(){
+function reloadPage() {
     chrome.tabs.reload()
 }
 
 const menu = matrix({
     '/users': {
-        'Student_List ': (url, tab) => {
-            alert('test')
+        Student_List(url, tab) {
+            loadFiles('assets/jquery.js', 'downloadCSV.js', 'exportStudents.js')
         },
     },
     '/quizzes': {
@@ -67,9 +67,20 @@ const menu = matrix({
     },
     '/quizzes/*': {
         Export_Quiz(url, tab) {},
-        Add_Questions(url, tab) {},
-        Moderate_quiz(url, tab) {},
-        Quiz_Overrides(url, tab) {},
+        Add_Questions(url, tab) {
+            loadFiles(
+                'assets/jquery.js',
+                'assets/js-yaml.js',
+                'quizzes.js',
+                'quizPost.js',
+            )
+        },
+        Moderate_quiz(url, tab) {
+            loadFiles('assets/jquery.js', 'moderate_quiz.js')
+        },
+        Quiz_Overrides(url, tab) {
+            loadFiles('assets/jquery.js', 'canvasApi.js', 'quizAssign.js')
+        },
     },
 })
 
@@ -95,7 +106,5 @@ chrome.runtime.onInstalled.addListener(function() {
             contexts: ['link'],
             targetUrlPatterns: pattern,
         })
-
     })
 })
-
