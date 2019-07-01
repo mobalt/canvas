@@ -5,6 +5,43 @@ function onClickHandler(info, tab) {
     handlers[info.menuItemId](tab)
 }
 
+function matrix(dict, path = []) {
+    let result = []
+    for (const prop in dict) {
+        const value = dict[prop]
+        if (typeof value == 'object')
+            result = result.concat(matrix(value, path.concat(prop)))
+        else result.push(path.concat(prop, value))
+    }
+    return result
+}
+
+const T = {
+    dict(matrix, keyCol = 0, valueCol) {
+        if (valueCol == undefined) valueCol = keyCol + 1
+
+        const result = {}
+        for (const row of matrix) {
+            result[row[keyCol]] = row[valueCol]
+        }
+        return result
+    },
+
+    slice(matrix, startCol, endCol) {
+        return matrix.map(row => row.slice(startCol, endCol))
+    },
+
+    get(matrix, col) {
+        return matrix.map(row => row[col])
+    },
+
+    eachRow(matrix, fn) {
+        for (const row of matrix) {
+            fn.apply(matrix, row)
+        }
+    },
+}
+
 chrome.contextMenus.onClicked.addListener(onClickHandler)
 
 // Set up context menu
