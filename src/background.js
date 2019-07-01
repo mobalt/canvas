@@ -44,6 +44,23 @@ const T = {
 
 chrome.contextMenus.onClicked.addListener(onClickHandler)
 
+const menuTree = {
+    '/users': {
+        'Student_List ': (url, tab) => {
+            alert('test')
+        },
+    },
+    '/quizzes': {
+        Import_Quiz(url, tab) {},
+    },
+    '/quizzes/*': {
+        Export_Quiz(url, tab) {},
+        Add_Questions(url, tab) {},
+        Moderate_quiz(url, tab) {},
+        Quiz_Overrides(url, tab) {},
+    },
+}
+
 // Set up context menu
 chrome.runtime.onInstalled.addListener(function() {
     menuItem('Student List ↯', '/users')
