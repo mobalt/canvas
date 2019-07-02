@@ -1,3 +1,9 @@
+function store(obj) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.set(obj, resolve)
+    })
+}
+
 function processUrl(url) {
     const regex = /^(https?:\/\/[^\/]+\/)courses\/(?:(\d+)\/?(?:([a-z]+)\/?(\d+)?)?)/
     const [, base, course, type, item] = regex.exec(url) || []
@@ -13,7 +19,9 @@ function onClickHandler(info, tab) {
     const [fn, type] = info.menuItemId.replace(' ', '_').split(':')
     const url = info.linkUrl || info.pageUrl
     const urlObj = processUrl(url)
-    handlers[fn](urlObj, tab.id, tab)
+    store(urlObj).then(function() {
+        handlers[fn](urlObj, tab.id, tab)
+    })
 }
 
 function matrix(dict, path = []) {
