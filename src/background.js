@@ -4,6 +4,23 @@ function store(obj) {
     })
 }
 
+function extractToken(cookie) {
+    const regex = /_csrf_token=(\S+)/
+    const result = regex.exec(cookie)
+    return result ? decodeURIComponent(result[1]) : ''
+}
+
+function setTokenFromCookie() {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.executeScript({ code: 'document.cookie' }, cookie => {
+            store({
+                token: extractToken(cookie[0]),
+                date: new Date(),
+            }).then(resolve)
+        })
+    })
+}
+
 function processUrl(url) {
     const regex = /^(https?:\/\/[^\/]+\/)courses\/(?:(\d+)\/?(?:([a-z]+)\/?(\d+)?)?)/
     const [, base, course, type, item] = regex.exec(url) || []
@@ -13,13 +30,10 @@ function processUrl(url) {
 }
 
 function onClickHandler(info, tab) {
-    console.log('item ' + info.menuItemId + ' was clicked')
-    console.log('info: ' + JSON.stringify(info))
-    console.log('tab: ' + JSON.stringify(tab))
     const [fn, type] = info.menuItemId.replace(' ', '_').split(':')
     const url = info.linkUrl || info.pageUrl
     const urlObj = processUrl(url)
-    store(urlObj).then(function() {
+    Promise.all([setTokenFromCookie(), store(urlObj)]).then(function() {
         handlers[fn](urlObj, tab.id, tab)
     })
 }
