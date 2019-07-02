@@ -5,7 +5,7 @@
   questions:
     - type: Multiple Choice
       points: 1
-      text: "<p> Multiple Choice Text </p>"
+      text: '<p> Multiple Choice Text </p>'
       answers:
         - <Correct One
         - Wrong 1
@@ -92,4 +92,3 @@
     </tbody>
     </table>
     <p>Look at the table above for these 3 next questions.</p>
-
