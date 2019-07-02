@@ -1,10 +1,19 @@
+function processUrl(url) {
+    const regex = /^(https?:\/\/[^\/]+\/)courses\/(?:(\d+)\/?(?:([a-z]+)\/?(\d+)?)?)/
+    const [, base, course, type, item] = regex.exec(url) || []
+    const api = base + 'api/v1/'
+
+    return { base, api, course, type, item }
+}
+
 function onClickHandler(info, tab) {
     console.log('item ' + info.menuItemId + ' was clicked')
     console.log('info: ' + JSON.stringify(info))
     console.log('tab: ' + JSON.stringify(tab))
     const [fn, type] = info.menuItemId.replace(' ', '_').split(':')
     const url = info.linkUrl || info.pageUrl
-    handlers[fn](url, tab.id, tab)
+    const urlObj = processUrl(url)
+    handlers[fn](urlObj, tab.id, tab)
 }
 
 function matrix(dict, path = []) {
