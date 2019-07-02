@@ -107,7 +107,7 @@ const menu = matrix({
             )
         },
         Moderate_quiz(url, tab) {
-            loadFiles('assets/jquery.js', 'moderate_quiz.js')
+            window.open('moderate.html')
         },
         Quiz_Overrides(url, tab) {
             loadFiles('assets/jquery.js', 'canvasApi.js', 'quizAssign.js')
