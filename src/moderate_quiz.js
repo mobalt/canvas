@@ -115,10 +115,16 @@ $('#mod_update').click(function() {
             }, 3000)
         })
         .catch(function(error) {
-            $('#display_results').html(
-                `<span class="failed">Error: </span> ${error}.`,
-            )
-            console.log(error)
+            let errorMsg = '<span class="failed">Error: </span> '
+
+            if (error.response && error.response.data.errors) {
+                errorMsg += error.response.data.errors
+                    .map(e => e.message)
+                    .join(errorMsg)
+            } else {
+                errorMsg += error
+            }
+            $('#display_results').html(errorMsg)
         })
 })
 
