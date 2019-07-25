@@ -1,80 +1,79 @@
 const newForm = `
-<h1>Bulk Quiz Extensions</h1>
-<div>
-    <p>Enter list of student canvas-ids below:</p>
-    <textarea id="student_list">
-    31499
-    15656
-    18279
-    </textarea>
-    <table>
-        <tr>
-            <td> Extra Attempts:</td>
-            <td>
-                <input
-                        id="extra_attempts"
-                        type="text"
-                        name="extra_attempts"
-                        title="additional extra attempts"
-                >
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Extra time <b>(in minutes)</b> on every attempt:
-            </td>
-            <td>
-                <input
-                        id="extra_time"
-                        type="text"
-                        name="extra_time"
-                        title="additional minutes on each attempt"
-                        value="15"
-                >
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="checkbox" name="manually_unlocked" id="manually_unlocked" value="1">
-                    Manually unlock the quiz for the next attempt
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center">
-                <button id="mod_update" class="btn btn-primary save_button">
-                    Submit Quiz Extensions for <b>5</b> Students
-                </button>
-            </td>
-        </tr>
-    </table>
+    <h1>Bulk Quiz Extensions</h1>
+    <div>
+        <p>Enter list of student canvas-ids below:</p>
+        <textarea id="student_list">
+        1301
+        1051
+        </textarea>
+        <table>
+            <tr>
+                <td> Extra Attempts:</td>
+                <td>
+                    <input
+                            id="extra_attempts"
+                            type="text"
+                            name="extra_attempts"
+                            title="additional extra attempts"
+                    >
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Extra time <b>(in minutes)</b> on every attempt:
+                </td>
+                <td>
+                    <input
+                            id="extra_time"
+                            type="text"
+                            name="extra_time"
+                            title="additional minutes on each attempt"
+                            value="15"
+                    >
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="checkbox" name="manually_unlocked" id="manually_unlocked" value="1">
+                        Manually unlock the quiz for the next attempt
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <button id="mod_update" class="btn btn-primary save_button">
+                        Submit Quiz Extensions for <b>5</b> Students
+                    </button>
+                </td>
+            </tr>
+        </table>
 
-    <div id="display_results"></div>
-    <style>
-    #student_list {
-    width: 500px;
-    min-height: 150px;
-    }
-    #display_results span{
-        border: #CCC solid 1px;
-        padding: 2px 4px;
-        margin: 3px;
-        border-radius: 8px;
-        background-color: #EEE;
-    }
-    #display_results span.success {
-        border-color: #060;
-        background-color: #5a4;
-        font-weight: bold;
-        color: #FFF
-    }
-    #display_results span.failed {
-        border-color: #600;
-        background-color: #c30;
-        font-weight: bold;
-        color: #FFF
-    }
-</style>
-</div>
+        <div id="display_results"></div>
+        <style>
+        #student_list {
+            width: 500px;
+            min-height: 150px;
+        }
+        #display_results span{
+            border: #CCC solid 1px;
+            padding: 2px 4px;
+            margin: 3px;
+            border-radius: 8px;
+            background-color: #EEE;
+        }
+        #display_results span.success {
+            border-color: #060;
+            background-color: #5a4;
+            font-weight: bold;
+            color: #FFF;
+        }
+        #display_results span.failed {
+            border-color: #600;
+            background-color: #c30;
+            font-weight: bold;
+            color: #FFF;
+        }
+    </style>
+    </div>
 `
 
 function getExtensionUrl() {
