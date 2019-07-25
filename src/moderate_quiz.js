@@ -76,19 +76,10 @@ const newForm = `
     </div>
 `
 
-function getExtensionUrl() {
-    const currentURL = document.location.href
-    return currentURL.substring(0, currentURL.length - 8) + 'extensions/'
-}
+$('body').html(newForm)
 
-function getToken() {
-    return $('#moderate_student_form > input[name="authenticity_token"]').val()
-}
-
-const postPayload = {
-    utf8: '✓',
-    authenticity_token: getToken(),
-    _method: 'POST',
+if (item_type != 'quizzes') {
+    throw new Error('Not a quiz')
 }
 const extensionURL = getExtensionUrl()
 
