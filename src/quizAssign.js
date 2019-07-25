@@ -45,13 +45,35 @@ $('#overlay_submit_btn').click(function() {
         .split(' ')
     const title = `${student_ids.length} student(s)`
 
-    r.get(`courses/${course_id}/quizzes/${item_id}`).then(response => {
-        const { assignment_id } = response.data
-        r.post(`courses/${course_id}/assignments/${assignment_id}/overrides`, {
-            assignment_override: {
-                student_ids,
-                title,
-            },
+    r.get(`courses/${course_id}/quizzes/${item_id}`)
+        .then(response => {
+            const { assignment_id } = response.data
+            return r.post(
+                `courses/${course_id}/assignments/${assignment_id}/overrides`,
+                {
+                    assignment_override: {
+                        student_ids,
+                        title,
+                    },
+                },
+            )
         })
-    })
+        .then(response => {
+            $('#display_results').html(
+                '<span class="success">Success.</span> Reloading this page in 5 seconds.',
+            )
+            setTimeout(function() {
+                window.location.reload(1)
+            }, 3000)
+        })
+        .catch(function(error) {
+            let errorMsg = '<span class="failed">Error: </span> '
+
+            if (error.response && error.response.data.errors) {
+                errorMsg += JSON.stringify(error.response.data.errors)
+            } else {
+                errorMsg += error
+            }
+            $('#display_results').html(errorMsg)
+        })
 })
