@@ -1,18 +1,18 @@
-function todaysDate() {
+function pad(n, len = 2) {
+    return String(n).padStart(len, '0')
+}
+function today() {
     const today = new Date()
-    let dd = today.getDate()
-    let mm = today.getMonth() + 1 //January is 0!
-    let yyyy = today.getFullYear()
 
-    if (dd < 10) {
-        dd = '0' + dd
-    }
+    //Having January be 0 will confuse mortals, so normalize it
+    const mm = today.getMonth() + 1,
+        dd = today.getDate(),
+        yyyy = today.getFullYear()
 
-    if (mm < 10) {
-        mm = '0' + mm
-    }
+    // pad the month and day with leading zeroes
+    return `${pad(mm)}-${pad(dd)}-${yyyy}`
+}
 
-    return mm + '-' + dd + '-' + yyyy
 }
 
 // request all paginated results
