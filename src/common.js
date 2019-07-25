@@ -35,6 +35,7 @@ r.interceptors.response.use(function(response) {
 })
 
 function parseLinks(data) {
+    if (!data) return {}
     let arrData = data.split('link:')
     data = arrData.length == 2 ? arrData[1] : data
     let parsed_data = {}
