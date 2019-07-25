@@ -96,6 +96,7 @@ const menu = matrix({
             loadFiles(
                 'assets/axios.v0.19.0.min.js',
                 'downloadCSV.js',
+                'common.js',
                 'exportStudents.js',
             )
         },
