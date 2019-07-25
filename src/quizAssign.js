@@ -36,20 +36,22 @@ const override_form = `
 </div>
 `
 
-    const assignmentLookup = Quiz.thisOne().getAssignment()
-    $('body').html(override_form)
-    $('#overlay_submit_btn').click(function() {
-        // prevent accidental double-submission
-        $(this).attr('disabled', 'disabled')
+$('body').html(override_form)
+$('#overlay_submit_btn').click(function() {
+    const student_ids = $('#student_list')
+        .val()
+        .replace(/\D+/g, ' ')
+        .trim()
+        .split(' ')
+    const title = `${student_ids.length} student(s)`
 
-        const students = $('#student_list')
-            .val()
-            .replace(/\D+/g, ' ')
-            .trim()
-            .split(' ')
-
-        assignmentLookup.then(assignment => {
-            assignment.addOverride(students)
+    r.get(`courses/${course_id}/quizzes/${item_id}`).then(response => {
+        const { assignment_id } = response.data
+        r.post(`courses/${course_id}/assignments/${assignment_id}/overrides`, {
+            assignment_override: {
+                student_ids,
+                title,
+            },
         })
     })
-
+})
