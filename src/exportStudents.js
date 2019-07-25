@@ -13,47 +13,91 @@ function today() {
     return `${pad(mm)}-${pad(dd)}-${yyyy}`
 }
 
+const course_id = 2
+function store(obj) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.set(obj, resolve)
+    })
 }
 
-// request all paginated results
-// assemble, then download a *.csv file
-
-// modify current url to use api version
-const apiUrl = document.location.href.replace(/instructure.com\//i, '$&api/v1/')
-
-// payload object that will be used in all requests
-const requestPayload = {
-    per_page: 100,
-    page: 1,
-    // 3 = students
-    enrollment_role_id: 3,
+function retrieve() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(
+            ['token', 'date', 'base', 'api', 'course', 'type', 'item'],
+            resolve,
+        )
+    })
 }
 
-// first row is header names
-let csvResults = [['sis_id', 'canvas_id', 'name']]
+const r = axios.create({
+    baseURL: 'http://fake.instructure.com/api/v1/',
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+    },
+    params: { per_page: 100 },
 
-//filename = classId_students_date.csv
-let filename = apiUrl.match(/\d+/)[0] + '_students_' + todaysDate() + '.csv'
+    // `withCredentials` indicates whether or not cross-site Access-Control requests
+    // should be made using credentials
+    withCredentials: false,
 
-// get 100 first results
-$.getJSON(apiUrl, requestPayload, onComplete)
+    xsrfCookieName: '_csrf_token',
+    xsrfHeaderName: 'X-CSRF-Token',
+})
+// Add a response interceptor
+r.interceptors.response.use(function(response) {
+    const links = parseLinks(response.headers.link)
 
-function onComplete(rows) {
-    // We are not interested in all fields, just three
-    // so pull those out and concat to running list
-    csvResults = csvResults.concat(
-        rows.map(s => [s.sis_user_id, s.id, s.sortable_name]),
-    )
-
-    // no more results available
-    if (rows.length == 0) {
-        // download csv results
-        downloadCSV(filename, csvResults)
+    // For array response.data that has more results available (has a next link)
+    // Go ahead and recursively fetch/concat the remaining data
+    if (
+        response.config.method == 'get' &&
+        Array.isArray(response.data) &&
+        links.next
+    ) {
+        console.log('Appending ', links.next)
+        return r.get(links.next).then(nextResponse => {
+            nextResponse.data = response.data.concat(nextResponse.data)
+            return nextResponse
+        })
     } else {
-        // more results ARE available
-        // get next 100 results
-        // and loop back through this function
-        requestPayload.page++
-        $.getJSON(apiUrl, requestPayload, onComplete)
+        // otherwise just return the unmodified original response
+        return response
     }
+})
+
+function parseLinks(data) {
+    let arrData = data.split('link:')
+    data = arrData.length == 2 ? arrData[1] : data
+    let parsed_data = {}
+
+    arrData = data.split(',')
+
+    for (d of arrData) {
+        linkInfo = /<([^>]+)>;\s+rel="([^"]+)"/gi.exec(d)
+
+        parsed_data[linkInfo[2]] = linkInfo[1]
+    }
+
+    return parsed_data
 }
+
+// example `7789_students_01-31-2000.csv`
+const filename = `${course_id}_students_${today()}.csv`
+alert(
+    `Downloading student list to ${filename} Depending on class-size, might take several seconds.`,
+)
+
+// Students have enrollment_role_id == 3, filter out anyone else
+r.get(`courses/${course_id}/users?per_page=100&enrollment_role_id=3`).then(
+    response => {
+        // console.log('Final response', response)
+
+        // first row is header names
+        const csvResults = [['sis_id', 'canvas_id', 'name']].concat(
+            response.data,
+        )
+
+        // download *.csv file
+        downloadCSV(filename, csvResults)
+    },
+)
