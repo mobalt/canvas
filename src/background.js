@@ -115,7 +115,12 @@ const menu = matrix({
             )
         },
         Moderate_quiz(url, tab) {
-            window.open('moderate.html')
+            loadFiles(
+                'assets/axios.v0.19.0.min.js',
+                'assets/jquery.js',
+                'common.js',
+                'moderate_quiz.js',
+            )
         },
         Quiz_Overrides(url, tab) {
             loadFiles('assets/jquery.js', 'canvasApi.js', 'quizAssign.js')
