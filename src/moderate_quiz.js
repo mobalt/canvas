@@ -108,9 +108,11 @@ $('#mod_update').click(function() {
     })
         .then(response => {
             $('#display_results').html(
-                '<span class="success">Success.</span> Press F5 to reload the page.',
+                '<span class="success">Success.</span> Reloading this page in 5 seconds.',
             )
-            console.log(response)
+            setTimeout(function() {
+                window.location.reload(1)
+            }, 3000)
         })
         .catch(function(error) {
             $('#display_results').html(
