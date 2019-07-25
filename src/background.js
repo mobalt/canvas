@@ -33,6 +33,9 @@ function onClickHandler(info, tab) {
     const [fn, type] = info.menuItemId.replace(' ', '_').split(':')
     const url = info.linkUrl || info.pageUrl
     const urlObj = processUrl(url)
+    chrome.tabs.executeScript({
+        code: `const baseUrl = "${urlObj.base}", apiUrl = "${urlObj.api}", course_id="${urlObj.course}", item_id="${urlObj.item}", item_type="${urlObj.type}"`,
+    })
     Promise.all([setTokenFromCookie(), store(urlObj)]).then(function() {
         handlers[fn](urlObj, tab.id, tab)
     })
@@ -91,7 +94,7 @@ const menu = matrix({
     '/users': {
         Student_List(url, tab) {
             loadFiles(
-                'assets/axios.v0.19.0.min',
+                'assets/axios.v0.19.0.min.js',
                 'downloadCSV.js',
                 'exportStudents.js',
             )

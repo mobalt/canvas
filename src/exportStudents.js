@@ -13,7 +13,6 @@ function today() {
     return `${pad(mm)}-${pad(dd)}-${yyyy}`
 }
 
-const course_id = 2
 function store(obj) {
     return new Promise((resolve, reject) => {
         chrome.storage.local.set(obj, resolve)
@@ -30,7 +29,7 @@ function retrieve() {
 }
 
 const r = axios.create({
-    baseURL: 'http://fake.instructure.com/api/v1/',
+    baseURL: apiUrl,
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
     },
