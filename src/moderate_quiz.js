@@ -81,59 +81,44 @@ $('body').html(newForm)
 if (item_type != 'quizzes') {
     throw new Error('Not a quiz')
 }
-const extensionURL = getExtensionUrl()
+const quiz_id = item_id
 
-// const h1 = document.getElementsByTagName('H1')[0]
-// h1.textContent = 'ONe Two'
-// 'https://wustl.instructure.com/api/v1/courses/6225/users.json?per_page=100&enrollment_role_id=3&page=6'
-// $('h1').html(getExtensionUrl() + 'Test')
+$('#student_list').change(cleanInput)
 
-$('h1')
-    .append('<button>Bulk</button>')
-    .click(function() {
-        $('#content').html(newForm)
+$('#mod_update').click(function() {
+    cleanInput()
 
-        $('#student_list').change(cleanInput)
-
-        $('#mod_update').click(function() {
-            $(this).attr('disabled', 'disabled')
-            cleanInput()
-            postPayload['extra_attempts'] = +$('#extra_attempts').val()
-            postPayload['extra_time'] = +$('#extra_time').val()
-            postPayload['manually_unlocked'] = +$('#manually_unlocked').prop(
-                'checked',
-            )
-
-            submitExtensions()
-        })
-    })
-
-let submittedAlready = false
-
-function submitExtensions() {
-    if (submittedAlready) return false
-    submittedAlready = true
-
+    $(this).attr('disabled', 'disabled')
+    const extra_attempts = +$('#extra_attempts').val(),
+        extra_time = +$('#extra_time').val(),
+        manually_unlocked = +$('#manually_unlocked').prop('checked')
     const students = $('#student_list')
         .val()
         .split(' ')
-    const results = $('#display_results')
-    let qty = 0
-    students.forEach(function(studentID, index, array) {
-        qty++
-        results.append(`<span value="${studentID}">${studentID}</span>`)
-        $.post(extensionURL + studentID, postPayload)
-            .done(function(data) {
-                results.find(`[value="${studentID}"]`).addClass('success')
-            })
-            .fail(function(data) {
-                results.find(`[value="${studentID}"]`).addClass('failed')
-            })
-            .always(function() {
-                qty--
-            })
+
+    const quiz_extensions = students.map(user_id => ({
+        user_id,
+        extra_time,
+        extra_attempts,
+        manually_unlocked,
+    }))
+
+    r.post(`courses/${course_id}/quizzes/${quiz_id}/extensions`, {
+        quiz_extensions,
     })
-}
+        .then(response => {
+            $('#display_results').html(
+                '<span class="success">Success.</span> Press F5 to reload the page.',
+            )
+            console.log(response)
+        })
+        .catch(function(error) {
+            $('#display_results').html(
+                `<span class="failed">Error: </span> ${error}.`,
+            )
+            console.log(error)
+        })
+})
 
 function cleanInput() {
     const textarea = $('#student_list')
