@@ -90,7 +90,11 @@ function reloadPage() {
 const menu = matrix({
     '/users': {
         Student_List(url, tab) {
-            loadFiles('assets/jquery.js', 'downloadCSV.js', 'exportStudents.js')
+            loadFiles(
+                'assets/axios.v0.19.0.min',
+                'downloadCSV.js',
+                'exportStudents.js',
+            )
         },
     },
     '/quizzes': {
