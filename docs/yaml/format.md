@@ -97,3 +97,52 @@ Example:
       - 42
       - wrong
 ```
+
+Essay
+------------------------------
+Provides a large textbox below the prompt.
+
+Example:
+```yaml
+- type: Essay
+  text: Write a 500-word essay below summarizing the <i>Battle of 1812.</i>
+```
+
+True-or-False
+------------------------------
+
+Example:
+
+```yaml
+- type: True-or-False
+  text: Am I the greatest teacher ever?
+  answer: true
+```
+
+
+Matching
+------------------------------
+Specify the matching pairs in the same line separated by a semicolon (`:`). To add distractors, just don't specify an item on the left side.
+
+Example:
+
+```yaml
+- type: Matching
+  text: <p> Match the following:</p>
+  answers:
+    - left1: right1
+    - left2: right2
+    - unmatched right distractor1
+    - another distractor2
+    - distractor3
+```
+
+File Upload
+------------------------------
+
+Example:
+
+```yaml
+- type: File Upload
+  text: <p> Please upload your essay in <b>*.docx</b>(<i>Microsoft Word</i>) format </p>
+```
