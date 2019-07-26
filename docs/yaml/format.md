@@ -13,6 +13,7 @@ Multiple Choice
 ----------------------
 This is the default question type, specifying the type is optional for multiple choice (`type: Multiple Choice`), but required for all other question types.
 Prefix the correct answer with a tilde(`~`).
+
 Example:
 ```yaml
 - type: Multiple Choice
@@ -29,6 +30,7 @@ Multiple Answers
 ------------------------------
 Prefix correct answers with a tilde(`~`)
 
+Example:
 ```yaml
 - type: Multiple Answers
   text: <p> Two or more? <i>(select all that apply)</i></p>
