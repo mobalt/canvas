@@ -9,10 +9,7 @@ module.exports = {
     mode: process.env.NODE_ENV || 'development',
     entry: {
         background: './src/background.js',
-    },
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        //     filename: '[name].bundle.js',
+        content: './src/content.js',
     },
     plugins: [
         new CleanWebpackPlugin(),
