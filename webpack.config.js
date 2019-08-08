@@ -7,13 +7,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin'),
 
 module.exports = {
     mode: process.env.NODE_ENV || 'development',
-    entry: {
-        background: './src/background.js',
-        content: './src/content.js',
-    },
+    entry: { content: './src/content.js' },
     plugins: [
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
+            { from: 'src/background.js' },
             {
                 from: 'src/manifest.yml',
                 to: 'manifest.json',
