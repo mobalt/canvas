@@ -1,6 +1,6 @@
-import {today} from "./helpers"
-import {downloadCsv} from "./download"
-
+import r from './common'
+import { today } from './helpers'
+import { downloadCsv } from './download'
 
 // example `7789_students_01-31-2000.csv`
 const filename = `${course_id}_students_${today()}.csv`
