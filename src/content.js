@@ -19,12 +19,7 @@ const handlers = {
         )
     },
     Moderate_Quiz(url, tab) {
-        loadFiles(
-            'assets/axios.v0.19.0.min.js',
-            'assets/jquery.js',
-            'common.js',
-            'moderate_quiz.js',
-        )
+        require('./moderate_quiz')
     },
     Quiz_Overrides(url, tab) {
         loadFiles(

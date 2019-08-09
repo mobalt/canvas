@@ -1,3 +1,6 @@
+import $ from 'jquery'
+import r from './common'
+
 const newForm = `
     <h1>Bulk Quiz Extensions</h1>
     <div>
@@ -78,7 +81,7 @@ const newForm = `
 
 $('body').html(newForm)
 
-if (item_type != 'quizzes') {
+if (item_type !== 'quizzes') {
     throw new Error('Not a quiz')
 }
 const quiz_id = item_id
