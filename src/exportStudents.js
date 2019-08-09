@@ -13,20 +13,6 @@ function today() {
     return `${pad(mm)}-${pad(dd)}-${yyyy}`
 }
 
-function store(obj) {
-    return new Promise((resolve, reject) => {
-        chrome.storage.local.set(obj, resolve)
-    })
-}
-
-function retrieve() {
-    return new Promise((resolve, reject) => {
-        chrome.storage.local.get(
-            ['token', 'date', 'base', 'api', 'course', 'type', 'item'],
-            resolve,
-        )
-    })
-}
 
 // example `7789_students_01-31-2000.csv`
 const filename = `${course_id}_students_${today()}.csv`
@@ -40,11 +26,16 @@ r.get(`courses/${course_id}/users?per_page=100&enrollment_role_id=3`).then(
         // console.log('Final response', response)
 
         // first row is header names
-        const csvResults = [['sis_id', 'canvas_id', 'name']].concat(
-            response.data,
+        const csvResults = [['canvas_id', 'sis_id', 'name']].concat(
+            response.data.map(
+                ({ id, sis_user_id: sis, sortable_name: name }) => [
+                    id,
+                    sis,
+                    name,
+                ],
+            ),
         )
 
-        // download *.csv file
-        downloadCSV(filename, csvResults)
+        downloadCsv(filename, csvResults)
     },
 )
