@@ -1,3 +1,9 @@
+/**
+ * Download text file
+ * @param {string} filename
+ * @param {string} textContent
+ * @param {string} [mimetype="plain"]
+ */
 export default function download(filename, textContent, mimetype = 'plain') {
     const blob = new Blob([textContent], {
         type: `text/${mimetype};charset=utf-8;`,

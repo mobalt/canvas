@@ -8,15 +8,7 @@ const handlers = {
     },
     Import_Quiz(url, tab) {},
     Export_Quiz(url, tab) {
-        loadFiles(
-            'assets/jquery.js',
-            'assets/axios.v0.19.0.min.js',
-            'assets/js-yaml.js',
-            'q_lib.js',
-            'canvas_questions.js',
-            'common.js',
-            'exportQuiz.js',
-        )
+        require('./exportQuiz')
     },
     Add_Questions(url, tab) {
         loadFiles(
