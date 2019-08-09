@@ -1,3 +1,6 @@
+import $ from 'jquery'
+import r from './common'
+
 const override_form = `
 <h1>Override List for specific Assignment</h1>
 <div>
