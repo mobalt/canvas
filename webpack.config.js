@@ -5,8 +5,11 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin'),
     yaml = require('js-yaml'),
     path = require('path')
 
-module.exports = {
-    mode: process.env.NODE_ENV || 'development',
+const mode =  process.env.NODE_ENV || 'development'
+
+
+const configs = {
+    mode,
     entry: { content: './src/content.js' },
     plugins: [
         new CleanWebpackPlugin(),
@@ -31,5 +34,11 @@ module.exports = {
         ]),
         new WriteFilePlugin(),
     ],
-    devtool: 'cheap-module-eval-source-map',
 }
+
+
+if (mode == 'development'){
+    configs.devtool = 'cheap-module-eval-source-map'
+}
+
+module.exports = configs
