@@ -40,33 +40,15 @@ chrome.runtime.onInstalled.addListener(function() {
     })
 
     chrome.contextMenus.create({
-        id: 'Quiz_Overrides:link',
-        title: 'Modify Overrides for this quiz',
-        targetUrlPatterns: ['*://*/courses/*/quizzes/*'],
-    })
-
-    chrome.contextMenus.create({
         id: 'Moderate_Quiz',
         title: 'Moderate quiz',
         documentUrlPatterns: ['*://*/courses/*/quizzes/*'],
     })
 
     chrome.contextMenus.create({
-        id: 'Moderate_Quiz:link',
-        title: 'Moderate this quiz',
-        targetUrlPatterns: ['*://*/courses/*/quizzes/*'],
-    })
-
-    chrome.contextMenus.create({
         id: 'Export_Quiz',
         title: 'Export quiz (.yml)',
         documentUrlPatterns: ['*://*/courses/*/quizzes/*'],
-    })
-
-    chrome.contextMenus.create({
-        id: 'Export_Quiz:link',
-        title: 'Export this quiz (.yml)',
-        targetUrlPatterns: ['*://*/courses/*/quizzes/*'],
     })
 })
 

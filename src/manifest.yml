@@ -4,7 +4,9 @@ name: Tool for Canvas LMS
 description: Adds functionality to Canvas LMS
 version: 2.0.0
 icons:
-  '64': icons8-bug-64.png
+  128: 128x128.png
+  64: 64x64.png
+  16: 16x16.png
 permissions:
   - contextMenus
   - activeTab
