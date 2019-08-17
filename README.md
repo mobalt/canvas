@@ -16,10 +16,21 @@ Steps:
 
 
 ### Quiz Overrides
-TODO
+This feature lets you specify when a specific group of students can access a quiz. Instead of selecting students individually (error-prone), just do it in bulk.
+
+Steps:
+1. Right-click > *Quiz Overrides*
+2. Paste the list of students' sis_id.
+3. Submit.
 
 ### Moderate Quiz
-TODO
+Some students need special accomodations in the form of extra time or extra attempts. This list of students typically will not change throughout the semester and will need to be applied for every quiz. Just make that list of student canvas_id once and save a to a local folder.
+
+Steps:
+1. Right-click > *Moderate Quiz*
+2. Paste the list of students' sis_id.
+3. Modify the accomodations required. Be it time or attempts.
+4. Submit.
 
 ### Quiz Export/Import
 #### Question Format
@@ -30,10 +41,8 @@ TODO
 
 ## Development
 
-| Command            | Task                                                  |
-| ------------------ | ---------------------------------------------------   |
-| `yarn dev`         | Run development server.                               |
-| `yarn build`       | Build production ready code into `dist/`.           |
-| `yarn lint`        | Fix style of code in `src/`.                          |
-| `yarn lint:check`  | Don't overwrite! Just list files with linting errors. |
-| `yarn test`        | Run the unit tests via Mocha.                         |
+| Command            | Task                                                                          |
+| ------------------ | ---------------------------------------------------                           |
+| `yarn build`       | Bundle the code into `dist/`. This folder can be directly loaded into Chrome. |
+| `yarn lint`        | Fix source-code styling errors.                                               |
+| `yarn test`        | Run the unit tests via Mocha.                                                 |
