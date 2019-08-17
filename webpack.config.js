@@ -39,6 +39,8 @@ const configs = {
 
 if (mode == 'development'){
     configs.devtool = 'cheap-module-eval-source-map'
+} else {
+    configs.devtool = 'nosources-source-map'
 }
 
 module.exports = configs
