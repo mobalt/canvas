@@ -59,3 +59,51 @@ chrome.runtime.onInstalled.addListener(function() {
 })
 
 chrome.contextMenus.onClicked.addListener(onClickHandler)
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.contentScriptQuery == 'queryPrice') {
+        // var url= "http://fake.instructure.com/files/21/download?download_frd=1&verifier=1HRAMtYFWcZNzY6LoarEyB7Q6aiu8QVBcfXpNkup"
+        var url =
+            'https://wustl.beta.instructure.com/files/603882/download?download_frd=1&verifier=BMwhwDzaDSDcCHUb27fiRo2xYaQ0TmwE4raucDwe'
+        // var url = "https://another-site.com/price-query?itemId=" +
+        // 	encodeURIComponent(request.itemId);
+        fetch(url)
+            .then(response => {
+                // console.log(response)
+                // console.log('>>>>',arguments)
+                let stringPromise = response.text()
+                console.log('Output:')
+                console.log(stringPromise)
+                return stringPromise
+            })
+            // .then(text => parsePrice(text))
+            .then(price => sendResponse(price))
+        return true // Will respond asynchronously.
+    } else if (request.getFile) {
+        const { headers, url } = request.getFile
+
+        fetch(url, {
+            // credentials: "include",
+            // headers,
+            referrer: url,
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                ...headers,
+
+                'Content-Type': 'text/plain',
+                Accept: 'text/plain',
+            },
+            // mode: 'no-cors'
+        })
+            .then(response => {
+                // console.log(response)
+                // console.log('>>>>',arguments)
+                let stringPromise = response.text()
+                console.log('Output:')
+                console.log(stringPromise)
+                return stringPromise
+            })
+            // .then(text => parsePrice(text))
+            .then(text => sendResponse(text))
+    }
+})
