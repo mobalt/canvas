@@ -7,6 +7,9 @@ const handlers = {
         require('./exportStudents')
     },
     Import_Quiz(url, tab) {},
+    Export_Responses(url, tab) {
+        require('./download_submissions')
+    },
     Export_Quiz(url, tab) {
         require('./exportQuiz')
     },

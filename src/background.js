@@ -50,6 +50,12 @@ chrome.runtime.onInstalled.addListener(function() {
         title: 'Export quiz (.yml)',
         documentUrlPatterns: ['*://*/courses/*/quizzes/*'],
     })
+
+    chrome.contextMenus.create({
+        id: 'Export_Responses',
+        title: 'Export Responses (.yml)',
+        documentUrlPatterns: ['*://*/courses/*/quizzes/*'],
+    })
 })
 
 chrome.contextMenus.onClicked.addListener(onClickHandler)
