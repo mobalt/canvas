@@ -52,9 +52,9 @@ Steps to download canvas ID:
        Use this, along with `name` to lookup the canvas_id for your students.
     * Below is an example of what the file will look like:
 
-            ![](docs/images/image4.png)
+![](docs/images/image4.png)
 
-### Quiz Overrides
+## Quiz Overrides
 
 This feature lets you specify whether/when a specific
 group of students can access a quiz. Instead of selecting students
@@ -71,15 +71,22 @@ Steps:
 ![](docs/images/image7.png)
 
 4.  The form below will appear. Paste the list of students' canvas\_id into the
-    textbox. ![](docs/images/image1.png)
+    textbox.
+
+![](docs/images/image1.png)
+
 5.  Click “*Submit Override*”.
-6.  A green box will alert you to a successful submission.![](docs/images/image3.png)
+6.  A green box will alert you to a successful submission.
+
+![](docs/images/image3.png)
+
 7.  The page will automatically reload in 5 seconds.
     Now check that the submitted students show up on the quiz
     page.
+
 ![](docs/images/image10.png)
 
-### Moderate Quiz
+## Moderate Quiz
 
 Some students need special accommodations in the form
 of extra time or extra attempts. This list of students typically will
@@ -93,21 +100,30 @@ Steps:
 1.  Go to the Quizzes page and click on a specific
     quiz.
 2.  Right-click anywhere on the quiz page.
-3.  Under *“Tool for Canvas LMS”* select *“Moderate quiz”*. ![](docs/images/image8.png)
+3.  Under *“Tool for Canvas LMS”* select *“Moderate quiz”*. 
+
+![](docs/images/image8.png)
+
 4.  The form below will appear. Paste the list of
-    students' canvas\_ids into the textbox.![](docs/images/image2.png)
+    students' canvas\_ids into the textbox.
+
+![](docs/images/image2.png)
+
 5.  Set the accommodations required. (For example, in
     the screenshot, I set 123 extra minutes for 11 students.)
 6.  Click “*Submit Quiz Extensions*”.
 7.  A green box will alert you to a successful
-    submission:![](docs/images/image3.png)
+    submission:
+
+![](docs/images/image3.png)
+
 8.  The page will automatically reload in 5 seconds.
     Now check that the submitted students have the requested
     accommodations on the moderate page:
 
 ![](docs/images/image5.png)
 
-### Quiz Export/Import
+## Quiz Export/Import
 
 #### Question Format
 Questions are defined using YAML. [Find out more about how to format the questions](docs/yaml/format.md)
