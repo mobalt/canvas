@@ -11,7 +11,7 @@ icons:
 permissions:
   - contextMenus
   - activeTab
-  - storage
+#  - storage
 background:
   persistent: false
   scripts:
